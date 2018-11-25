@@ -1,0 +1,17 @@
+.DS_Store
+.circleci
+.editorconfig
+.gitattributes
+.github
+.gitmodules
+.npmrc
+.project
+.settings
+.travis.yml
+.tscache
+.vscode
+/build/
+/coverage/
+/src/
+/test/
+tslint.json

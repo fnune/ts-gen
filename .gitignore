@@ -1,0 +1,11 @@
+*.swo
+*.swp
+.DS_Store
+.tscache/
+.vscode
+/.idea
+/coverage/
+/lib/
+node_modules/
+npm-debug.log
+package-lock.json

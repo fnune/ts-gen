@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
+    "lib": ["es6"],
+    "module": "commonjs",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "lib",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es5"
+  },
+  "include": ["src"]
+}
