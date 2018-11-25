@@ -19,9 +19,12 @@
   "version": "0.1.0",
   "scripts": {
     "build": "tsc",
+    "ci": "npm-run-all build format:ci lint test:ci",
     "format": "prettier --write './src/**/*.ts' './test/**/*.ts'",
+    "format:ci": "npm run format && git diff --exit-code",
     "lint": "tslint --exclude '**/*.js' --project .",
     "test": "jest --coverage --coverageReporters=lcov --watch",
+    "test:ci": "jest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {},
