@@ -8,8 +8,9 @@ import * as ts from 'typescript'
  * requested target.
  */
 interface IntermediateDescription {
-  text: string
   documentation: string | null
+  node: ts.Node
+  symbol: ts.Symbol | null
 }
 
 export class Reader {
@@ -38,15 +39,15 @@ export class Reader {
     return ts.createProgram(parsed.fileNames, parsed.options, host)
   }
 
-  private checker: ts.TypeChecker
   private intermediateDescriptions: IntermediateDescription[]
+  private checker: ts.TypeChecker
 
   constructor(private program: ts.Program) {
     this.intermediateDescriptions = []
     this.checker = this.program.getTypeChecker()
   }
 
-  public generateIntermediateDescriptions = (): void => {
+  public generateIntermediateDescriptions = (): IntermediateDescription[] => {
     const sourceFiles = this.program.getSourceFiles()
 
     sourceFiles
@@ -54,6 +55,8 @@ export class Reader {
       .forEach(sourceFile => {
         ts.forEachChild(sourceFile, this.visit)
       })
+
+    return this.intermediateDescriptions
   }
 
   /** Naïve implementation of a step through the AST */
@@ -66,8 +69,11 @@ export class Reader {
       const symbol = this.checker.getSymbolAtLocation(node.name)
 
       this.intermediateDescriptions.push({
-        text: node.getText(),
-        documentation: symbol ? JSON.stringify(symbol.getDocumentationComment(this.checker)) : null,
+        documentation: symbol
+          ? ts.displayPartsToString(symbol.getDocumentationComment(this.checker))
+          : null,
+        symbol: symbol || null,
+        node,
       })
     }
 
