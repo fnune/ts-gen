@@ -2,16 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import ts from 'typescript'
 
-/**
- * An intermediate description of any interface declaration, type alias or enum
- * that is read from a project. Will be used as a source to generate the
- * requested target.
- */
-interface IntermediateDescription {
-  text: string
-  name: string | null
-  documentation: ts.SymbolDisplayPart[]
-}
+import { describe } from 'describe'
+import { IntermediateDescription } from 'descriptors'
+import { isProcessableNode } from 'guards'
 
 export class Reader {
   public static createProgram = (
@@ -69,18 +62,8 @@ export class Reader {
 
   /** Naïve implementation of a step through the AST */
   private visit = (node: ts.Node) => {
-    if (
-      ts.isInterfaceDeclaration(node) ||
-      ts.isTypeAliasDeclaration(node) ||
-      ts.isEnumDeclaration(node)
-    ) {
-      const symbol = this.checker.getSymbolAtLocation(node.name)
-
-      this.intermediateDescriptions.push({
-        text: node.getText(),
-        name: symbol ? symbol.name : null,
-        documentation: symbol ? symbol.getDocumentationComment(this.checker) : [],
-      })
+    if (isProcessableNode(node)) {
+      this.intermediateDescriptions.push(describe(node, this.checker))
     }
 
     ts.forEachChild(node, this.visit)

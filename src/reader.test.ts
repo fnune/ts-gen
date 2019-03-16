@@ -29,12 +29,7 @@ describe('Reader', () => {
       expect(reader.getIntermediateDescriptions()).toContainEqual(
         expect.objectContaining({
           name: 'MockInterface',
-          documentation: [
-            {
-              text: 'This string should be included in the intermediate descriptions',
-              kind: 'text',
-            },
-          ],
+          documentation: ['This string should be included in the intermediate descriptions'],
         }),
       )
     })
