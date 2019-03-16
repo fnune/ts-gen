@@ -1,4 +1,9 @@
 import ts from 'typescript'
 
-export const record = ts.createIdentifier('record')
-export const jsc = ts.createIdentifier('jsc')
+export default {
+  jsc: ts.createIdentifier('jsc'),
+  record: ts.createIdentifier('record'),
+  string: ts.createIdentifier('string'),
+  number: ts.createIdentifier('number'),
+  boolean: ts.createIdentifier('bool'),
+}

@@ -1,11 +1,11 @@
 import ts from 'typescript'
 
-import { jsc, record } from 'printers/jsverify/identifiers'
+import identifiers from 'printers/jsverify/identifiers'
+
+import * as helpers from './helpers'
 
 // Can move these to a separate file as defaults, and must accept options eventually.
-function createJscRecord(): ts.ExpressionStatement {
-  const propertyAccessExpression = ts.createPropertyAccess(jsc, record)
-
+export function createJscRecord(): ts.ExpressionStatement {
   // Must be able to accept type arguments eventually.
   const recordTypeArguments = undefined
   const recordArguments = [
@@ -16,15 +16,5 @@ function createJscRecord(): ts.ExpressionStatement {
       true, // Multiline.
     ),
   ]
-
-  const callExpression = ts.createCall(
-    propertyAccessExpression,
-    recordTypeArguments,
-    recordArguments,
-  )
-  const jscRecordStatement = ts.createExpressionStatement(callExpression)
-
-  return jscRecordStatement
+  return helpers.createJscCallExpression(identifiers.record, recordArguments, recordTypeArguments)
 }
-
-export { createJscRecord }
