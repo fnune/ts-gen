@@ -24,8 +24,7 @@ export function describe(node: ProcessableNode, checker: ts.TypeChecker): Interm
       type: ProcessableType.INTERFACE,
       fields: node.members.map(member => ({
         name: member.name,
-        // TODO: Implement recognizing optional fields.
-        optional: false,
+        optional: !!member.questionToken,
         // TODO: Transform members into processable nodes.
         description: describe(member as any, checker),
       })),
