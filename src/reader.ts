@@ -9,7 +9,8 @@ import * as ts from 'typescript'
  */
 interface IntermediateDescription {
   text: string
-  documentation: string | null
+  name: string | null
+  documentation: ts.SymbolDisplayPart[]
 }
 
 export class Reader {
@@ -18,6 +19,14 @@ export class Reader {
     projectDirectory: string = path.dirname(configFile),
   ): ts.Program => {
     const config = ts.readConfigFile(configFile, ts.sys.readFile)
+
+    if (config.error)
+      throw new Error(
+        [
+          `Error trying to read config file from ${path.resolve(configFile)}:`,
+          JSON.stringify(config.error, undefined, 2),
+        ].join('\n\n'),
+      )
 
     const parseConfigHost: ts.ParseConfigHost = {
       fileExists: fs.existsSync,
@@ -46,6 +55,8 @@ export class Reader {
     this.checker = this.program.getTypeChecker()
   }
 
+  public getIntermediateDescriptions = () => this.intermediateDescriptions
+
   public generateIntermediateDescriptions = (): void => {
     const sourceFiles = this.program.getSourceFiles()
 
@@ -67,10 +78,13 @@ export class Reader {
 
       this.intermediateDescriptions.push({
         text: node.getText(),
-        documentation: symbol ? JSON.stringify(symbol.getDocumentationComment(this.checker)) : null,
+        name: symbol ? symbol.name : null,
+        documentation: symbol ? symbol.getDocumentationComment(this.checker) : [],
       })
     }
 
     ts.forEachChild(node, this.visit)
   }
 }
+
+export default Reader
