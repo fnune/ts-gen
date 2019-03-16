@@ -5,4 +5,5 @@ module.exports = {
   },
   testRegex: 'test\\.ts$',
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+  moduleDirectories: ['node_modules', 'src'],
 }

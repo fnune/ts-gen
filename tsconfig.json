@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "importHelpers": true,
+    "baseUrl": "src",
     "lib": ["es6"],
     "module": "commonjs",
     "noUnusedLocals": true,

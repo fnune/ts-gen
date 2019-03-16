@@ -1,10 +1,9 @@
 import ts from 'typescript'
 
-// Can move these to a separate file as defaults, and must accept options eventually.
-const record = ts.createIdentifier('record')
-const jsc = ts.createIdentifier('jsc')
+import { jsc, record } from 'printers/jsverify/identifiers'
 
-function makeJscRecord() {
+// Can move these to a separate file as defaults, and must accept options eventually.
+function createJscRecord(): ts.ExpressionStatement {
   const propertyAccessExpression = ts.createPropertyAccess(jsc, record)
 
   // Must be able to accept type arguments eventually.
@@ -23,16 +22,9 @@ function makeJscRecord() {
     recordTypeArguments,
     recordArguments,
   )
-  const expressionStatement = ts.createExpressionStatement(callExpression)
+  const jscRecordStatement = ts.createExpressionStatement(callExpression)
 
-  return expressionStatement
+  return jscRecordStatement
 }
 
-const printJscRecord = (file: ts.SourceFile) =>
-  ts
-    .createPrinter({
-      newLine: ts.NewLineKind.LineFeed,
-    })
-    .printNode(ts.EmitHint.Unspecified, makeJscRecord(), file)
-
-export default printJscRecord
+export { createJscRecord }
