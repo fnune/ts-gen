@@ -27,8 +27,8 @@
     "format": "prettier --write './src/**/*.ts' './test/**/*.ts'",
     "format:ci": "npm run format && git diff --exit-code",
     "lint": "tslint --exclude '**/*.js' --project .",
-    "test": "jest --coverage --coverageReporters=lcov --watch",
-    "test:ci": "jest",
+    "test": "jest --watch",
+    "test:ci": "jest --coverage --coverageReporters=lcov",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {},
