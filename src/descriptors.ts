@@ -6,12 +6,14 @@ export type ProcessableNamedNode =
   | ts.InterfaceDeclaration
   | ts.TypeAliasDeclaration
   | ts.EnumDeclaration
+  | ts.TypeElement
 
 export enum ProcessableType {
   ENUM,
   INTERFACE,
   TYPE_ALIAS,
   TYPE_LITERAL,
+  TYPE_ELEMENT,
 }
 
 export interface BaseDescription {
@@ -28,7 +30,6 @@ export interface EnumDescription extends BaseDescription {
 export interface InterfaceDescription extends BaseDescription {
   type: ProcessableType.INTERFACE
   fields: Array<{
-    name: ts.TypeElement['name']
     optional: boolean
     description: IntermediateDescription
   }>
@@ -43,6 +44,10 @@ export interface TypeLiteralDescription extends BaseDescription {
   type: ProcessableType.TYPE_LITERAL
 }
 
+export interface TypeElementDescription extends BaseDescription {
+  type: ProcessableType.TYPE_ELEMENT
+}
+
 /**
  * An intermediate description of any interface declaration, type alias or enum
  * that is read from a project. Will be used as a source to generate the
@@ -53,3 +58,4 @@ export type IntermediateDescription =
   | InterfaceDescription
   | TypeAliasDescription
   | TypeLiteralDescription
+  | TypeElementDescription

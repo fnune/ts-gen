@@ -8,7 +8,7 @@ import {
 } from 'descriptors'
 
 export function describe(node: ProcessableNode, checker: ts.TypeChecker): IntermediateDescription {
-  const symbol = 'name' in node ? checker.getSymbolAtLocation(node.name) : null
+  const symbol = 'name' in node && node.name ? checker.getSymbolAtLocation(node.name) : null
 
   const baseDescription: BaseDescription = {
     text: node.getText(),
@@ -23,10 +23,9 @@ export function describe(node: ProcessableNode, checker: ts.TypeChecker): Interm
       ...baseDescription,
       type: ProcessableType.INTERFACE,
       fields: node.members.map(member => ({
-        name: member.name,
-        optional: !!member.questionToken,
-        // TODO: Transform members into processable nodes.
-        description: describe(member as any, checker),
+        optional: Boolean(member.questionToken),
+        // TODO: Support type references to avoid duplicates.
+        description: describe(member, checker),
       })),
     }
   }
@@ -42,6 +41,13 @@ export function describe(node: ProcessableNode, checker: ts.TypeChecker): Interm
     return {
       ...baseDescription,
       type: ProcessableType.TYPE_ALIAS,
+    }
+  }
+
+  if (ts.isTypeElement(node)) {
+    return {
+      ...baseDescription,
+      type: ProcessableType.TYPE_ELEMENT,
     }
   }
 

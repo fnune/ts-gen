@@ -1,8 +1,10 @@
+import { ProcessableType } from 'descriptors'
+
 import Reader from './reader'
 
 /** This string should be included in the intermediate descriptions */
 export interface MockInterface {
-  isForTests: true
+  isForTests?: boolean
 }
 
 describe('Reader', () => {
@@ -26,12 +28,27 @@ describe('Reader', () => {
     it('can parse a program and generate intermediate descriptions', () => {
       reader.generateIntermediateDescriptions()
 
-      expect(reader.getIntermediateDescriptions()).toContainEqual(
-        expect.objectContaining({
-          name: 'MockInterface',
-          documentation: ['This string should be included in the intermediate descriptions'],
-        }),
-      )
+      const mockInterfaceDescription = reader
+        .getIntermediateDescriptions()
+        .find(desc => desc.name === 'MockInterface')
+
+      expect(mockInterfaceDescription).toEqual({
+        documentation: ['This string should be included in the intermediate descriptions'],
+        name: 'MockInterface',
+        text: expect.any(String),
+        type: ProcessableType.INTERFACE,
+        fields: [
+          {
+            description: {
+              documentation: [],
+              name: 'isForTests',
+              text: expect.any(String),
+              type: ProcessableType.TYPE_ELEMENT,
+            },
+            optional: true,
+          },
+        ],
+      })
     })
   })
 })
