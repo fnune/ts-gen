@@ -1,6 +1,6 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import * as ts from 'typescript'
+import fs from 'fs'
+import path from 'path'
+import ts from 'typescript'
 
 /**
  * An intermediate description of any interface declaration, type alias or enum
