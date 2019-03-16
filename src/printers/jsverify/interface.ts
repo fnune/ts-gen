@@ -1,18 +1,24 @@
 import ts from 'typescript'
 
+import { InterfaceDescription } from 'descriptors'
+import { isNamedDescription } from 'guards'
 import identifiers from 'printers/jsverify/identifiers'
 
+import { createJscExpression } from './expression'
 import * as helpers from './helpers'
 
 // Can move these to a separate file as defaults, and must accept options eventually.
-export function createJscRecord(): ts.ExpressionStatement {
+export function createJscRecord(description: InterfaceDescription): ts.Expression {
+  const jscFields = description.fields
+    .map(field => field.description)
+    .filter(isNamedDescription)
+    .map(desc => ts.createPropertyAssignment(desc.name, createJscExpression(desc)))
+
   // Must be able to accept type arguments eventually.
   const recordTypeArguments = undefined
   const recordArguments = [
     ts.createObjectLiteral(
-      // Map over passed interface fields.
-      // Here's where we need to start taking into account the passed description.
-      [ts.createPropertyAssignment('field', ts.createTrue())],
+      jscFields,
       true, // Multiline.
     ),
   ]

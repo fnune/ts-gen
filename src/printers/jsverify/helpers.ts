@@ -14,8 +14,7 @@ export function createJscCallExpression(
   identifier: ts.Identifier,
   argumentsArray: ReadonlyArray<ts.Expression> = [],
   typeArguments: ReadonlyArray<ts.TypeNode> = [],
-) {
+): ts.Expression {
   const propertyAccessExpression = ts.createPropertyAccess(identifiers.jsc, identifier)
-  const callExpression = ts.createCall(propertyAccessExpression, typeArguments, argumentsArray)
-  return ts.createExpressionStatement(callExpression)
+  return ts.createCall(propertyAccessExpression, typeArguments, argumentsArray)
 }

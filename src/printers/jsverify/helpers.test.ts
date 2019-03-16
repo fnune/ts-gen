@@ -11,7 +11,7 @@ const resultFile = ts.createSourceFile(
   ts.ScriptKind.TS, // JS, TS, etc.
 )
 
-const print = (fun: () => ts.ExpressionStatement) =>
+const print = (fun: () => ts.Expression) =>
   ts
     .createPrinter({
       newLine: ts.NewLineKind.LineFeed,
@@ -21,7 +21,7 @@ const print = (fun: () => ts.ExpressionStatement) =>
 describe('jsverify call expression helper', () => {
   it('works for the simple, identifier-only case', () => {
     const result = print(() => helpers.createJscCallExpression(identifiers.string))
-    expect(result).toEqual('jsc.string();')
+    expect(result).toEqual('jsc.string()')
   })
 
   it('works with passed arguments', () => {
@@ -31,7 +31,7 @@ describe('jsverify call expression helper', () => {
         ts.createTrue(),
       ]),
     )
-    expect(result).toEqual('jsc.record({}, true);')
+    expect(result).toEqual('jsc.record({}, true)')
   })
 
   it('works with type arguments', () => {
@@ -42,6 +42,6 @@ describe('jsverify call expression helper', () => {
         [ts.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword), ts.createTypeLiteralNode([])],
       ),
     )
-    expect(result).toEqual('jsc.record<unknown, {}>({}, true);')
+    expect(result).toEqual('jsc.record<unknown, {}>({}, true)')
   })
 })

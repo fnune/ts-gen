@@ -6,4 +6,5 @@ export default {
   string: ts.createIdentifier('string'),
   number: ts.createIdentifier('number'),
   boolean: ts.createIdentifier('bool'),
+  constant: ts.createIdentifier('constant'),
 }

@@ -35,14 +35,12 @@ describe('Reader', () => {
       expect(mockInterfaceDescription).toEqual({
         documentation: ['This string should be included in the intermediate descriptions'],
         name: 'MockInterface',
-        text: expect.any(String),
         type: ProcessableType.INTERFACE,
         fields: [
           {
             description: {
               documentation: [],
               name: 'isForTests',
-              text: expect.any(String),
               type: ProcessableType.TYPE_ELEMENT,
             },
             optional: true,

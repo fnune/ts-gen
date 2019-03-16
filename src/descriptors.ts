@@ -1,6 +1,6 @@
 import ts from 'typescript'
 
-export type ProcessableNode = ProcessableNamedNode | ts.TypeLiteralNode
+export type ProcessableNode = ProcessableNamedNode | ts.TypeLiteralNode | ts.LiteralTypeNode
 
 export type ProcessableNamedNode =
   | ts.InterfaceDeclaration
@@ -14,11 +14,11 @@ export enum ProcessableType {
   TYPE_ALIAS,
   TYPE_LITERAL,
   TYPE_ELEMENT,
+  LITERAL_TYPE,
 }
 
 export interface BaseDescription {
   type?: unknown
-  text: string
   name: string | null
   documentation: string[]
 }
@@ -48,6 +48,11 @@ export interface TypeElementDescription extends BaseDescription {
   type: ProcessableType.TYPE_ELEMENT
 }
 
+export interface LiteralTypeDescription extends BaseDescription {
+  type: ProcessableType.LITERAL_TYPE
+  value: ts.LiteralType['value']
+}
+
 /**
  * An intermediate description of any interface declaration, type alias or enum
  * that is read from a project. Will be used as a source to generate the
@@ -59,3 +64,4 @@ export type IntermediateDescription =
   | TypeAliasDescription
   | TypeLiteralDescription
   | TypeElementDescription
+  | LiteralTypeDescription

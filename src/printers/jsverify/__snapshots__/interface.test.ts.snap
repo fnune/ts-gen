@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`jsverify record printer produces a result 1`] = `
+exports[`jsverify record printer produces a result with an object with literal types 1`] = `
 "jsc.record({
-    field: true
-});"
+    favoriteFruit: jsc.constant(\\"banana\\"),
+    favoriteFruit: jsc.constant(123)
+})"
+`;
+
+exports[`jsverify record printer produces a result with an object with primitive types 1`] = `
+"jsc.record({
+    favoriteFruit: jsc.constant(\\"banana\\"),
+    favoriteFruit: jsc.constant(123)
+})"
 `;

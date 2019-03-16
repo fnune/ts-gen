@@ -7,11 +7,12 @@ import {
   ProcessableNode,
 } from 'descriptors'
 
+// TODO: Support type references to avoid duplicates.
 export function describe(node: ProcessableNode, checker: ts.TypeChecker): IntermediateDescription {
   const symbol = 'name' in node && node.name ? checker.getSymbolAtLocation(node.name) : null
+  const type = checker.getTypeAtLocation(node)
 
   const baseDescription: BaseDescription = {
-    text: node.getText(),
     name: symbol ? symbol.name : null,
     documentation: symbol
       ? symbol.getDocumentationComment(checker).map(comment => comment.text)
@@ -24,7 +25,6 @@ export function describe(node: ProcessableNode, checker: ts.TypeChecker): Interm
       type: ProcessableType.INTERFACE,
       fields: node.members.map(member => ({
         optional: Boolean(member.questionToken),
-        // TODO: Support type references to avoid duplicates.
         description: describe(member, checker),
       })),
     }
@@ -48,6 +48,14 @@ export function describe(node: ProcessableNode, checker: ts.TypeChecker): Interm
     return {
       ...baseDescription,
       type: ProcessableType.TYPE_ELEMENT,
+    }
+  }
+
+  if (ts.isLiteralTypeNode(node) && type.isLiteral()) {
+    return {
+      ...baseDescription,
+      type: ProcessableType.LITERAL_TYPE,
+      value: type.value,
     }
   }
 

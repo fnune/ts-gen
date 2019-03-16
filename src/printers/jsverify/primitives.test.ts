@@ -10,7 +10,7 @@ const resultFile = ts.createSourceFile(
   ts.ScriptKind.TS, // JS, TS, etc.
 )
 
-const print = (fun: () => ts.ExpressionStatement) =>
+const print = (fun: () => ts.Expression) =>
   ts
     .createPrinter({
       newLine: ts.NewLineKind.LineFeed,
@@ -21,7 +21,7 @@ describe('jsverify string printer', () => {
   const result = print(primitives.createJscString)
 
   it('produces a result', () => {
-    expect(result).toEqual('jsc.string();')
+    expect(result).toEqual('jsc.string()')
   })
 })
 
@@ -29,7 +29,7 @@ describe('jsverify boolean printer', () => {
   const result = print(primitives.createJscBoolean)
 
   it('produces a result', () => {
-    expect(result).toEqual('jsc.bool();')
+    expect(result).toEqual('jsc.bool()')
   })
 })
 
@@ -37,6 +37,6 @@ describe('jsverify number printer', () => {
   const result = print(primitives.createJscNumber)
 
   it('produces a result', () => {
-    expect(result).toEqual('jsc.number();')
+    expect(result).toEqual('jsc.number()')
   })
 })
